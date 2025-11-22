@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EarnFlux</title>
+  <style>
+    /* All previous CSS styles remain exactly the same */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f5f5 0%, #e8f5e9 100%);
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+      padding-bottom: 60px;
+    }
+    header {
+      background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
+      color: #ffffff;
+      padding: 18px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    nav {
+      display: flex;
+      justify-content: space-around;
+      background: #388e3c;
+      color: white;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    nav button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: bold;
+      padding: 8px 12px;
+      border-radius: 20px;
+      transition: all 0.3s;
+    }
+    nav button:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    nav button.active {
+      background: rgba(255,255,255,0.2);
+      border-bottom: 3px solid #fff;
+    }
+    .container {
+      padding: 15px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .card {
+      background: white;
+      margin: 15px 0;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    .earn-item, .deal-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .earn-item:last-child, .deal-item:last-child {
+      border-bottom: none;
+    }
+    .earn-item img, .deal-item img {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .earn-item-content h4 {
+      margin: 0 0 5px 0;
+      font-size: 16px;
+      color: #2e7d32;
+    }
+    .earn-item-content p {
+      margin: 0;
+      font-size: 14px;
+      color: #666;
+    }
+    .category-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        border-bottom: 2px solid #2e7d32;
+        padding-bottom: 5px;
+        color: #2e7d32;
+    }
+    .deal-item .deal-link {
+        margin-left: auto;
+        background: #2e7d32;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: bold;
+        white-space: nowrap;
+        transition: all 0.3s;
+    }
+    .deal-item .deal-link:hover {
+        background: #1b5e20;
+        transform: scale(1.05);
+    }
+    
+    /* Auth Styles */
+    .auth-container {
+      max-width: 400px;
+      margin: 20px auto;
+    }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .auth-form input {
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .auth-form button {
+      padding: 12px;
+      background: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .auth-form button:hover {
+      background: #1b5e20;
+    }
+    .auth-switch {
+      text-align: center;
+      margin-top: 15px;
+    }
+    .auth-switch button {
+      background: none;
+      border: none;
+      color: #2e7d32;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .user-info {
+      text-align: center;
+      padding: 10px;
+      background: #e8f5e9;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    .logout-btn {
+      background: #f44336;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    
+    /* Festival Tab Specific Styles */
+    #festival .card {
+        border-left: 5px solid #ff9800;
+        background: linear-gradient(to right, #fff8e1, white);
+    }
+    .diwali-theme #festival .card {
+        border-left: 5px solid #ff5722;
+        background: linear-gradient(to right, #fff3e0, white);
+    }
+    .christmas-theme #festival .card {
+        border-left: 5px solid #e91e63;
+        background: linear-gradient(to right, #fce4ec, white);
+    }
+    .navratri-theme #festival .card {
+        border-left: 5px solid #9c27b0;
+        background: linear-gradient(to right, #f3e5f5, white);
+    }
+    
+    /* Dark Mode */
+    .dark {
+      background: linear-gradient(135deg, #1e1e1e 0%, #121212 100%);
+      color: #ddd;
+    }
+    .dark .card {
+      background: #2c2c2c;
+      color: #ddd;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    }
+    .dark .earn-item-content p { color: #aaa; }
+    .dark .earn-item-content h4 { color: #4caf50; }
+    .dark .deal-link { background: #388e3c; }
+    .dark .deal-link:hover { background: #2e7d32; }
+    .dark .category-title { 
+        border-bottom-color: #388e3c; 
+        color: #4caf50;
+    }
+    .dark footer {
+      background: #111;
+      color: #bbb;
+    }
+    .dark select {
+        background: #333;
+        color: #fff;
+    }
+    .dark #festival .card {
+        background: linear-gradient(to right, #332900, #2c2c2c);
+    }
+    .dark.diwali-theme #festival .card {
+        background: linear-gradient(to right, #332211, #2c2c2c);
+    }
+    .dark.christmas-theme #festival .card {
+        background: linear-gradient(to right, #330011, #2c2c2c);
+    }
+    .dark.navratri-theme #festival .card {
+        background: linear-gradient(to right, #2a0033, #2c2c2c);
+    }
+
+    footer {
+      background: #2e7d32;
+      color: #fff;
+      text-align: center;
+      padding: 12px;
+      font-size: 14px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+    }
+    select {
+      width: 100%;
+      padding: 8px;
+      margin: 6px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: white;
+    }
+    
+    /* Animation for tab switching */
+    .tab {
+      animation: fadeIn 0.5s;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    /* Loading animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Festival Header Animation */
+    .festival-header {
+      background: linear-gradient(45deg, #FF5722, #FF9800, #FF5722);
+      background-size: 200% 200%;
+      animation: festivalGlow 3s ease infinite;
+      color: white;
+      padding: 5px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    
+    .diwali-header {
+      background: linear-gradient(45deg, #FF5722, #FF9800, #FFC107, #FF9800, #FF5722);
+    }
+    
+    .navratri-header {
+      background: linear-gradient(45deg, #9c27b0, #e91e63, #9c27b0);
+    }
+    
+    .christmas-header {
+      background: linear-gradient(45deg, #e91e63, #2196f3, #4caf50, #2196f3, #e91e63);
+    }
+    
+    @keyframes festivalGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Coins System Styles */
+    .coins-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      color: #333;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .coins-display {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .coins-icon {
+      font-size: 24px;
+      color: #FF6B00;
+    }
+    
+    .spin-wheel-container {
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .wheel {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: conic-gradient(
+        #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, 
+        #FFEAA7, #DDA0DD, #98D8C8, #F7DC6F
+      );
+      margin: 0 auto 20px;
+      position: relative;
+      transition: transform 3s cubic-bezier(0.2, 0.8, 0.3, 1);
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+    
+    .wheel-pointer {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 30px;
+      background: #FF6B00;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      z-index: 2;
+    }
+    
+    .spin-btn {
+      background: linear-gradient(135deg, #FF6B00, #FF8C00);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 8px rgba(255,107,0,0.3);
+    }
+    
+    .spin-btn:hover:not(:disabled) {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(255,107,0,0.4);
+    }
+    
+    .spin-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin: 5px 0;
+    }
+    
+    .task-item:hover {
+      background: #f9f9f9;
+    }
+    
+    .task-item.completed {
+      background: #e8f5e9;
+      border-left: 4px solid #4caf50;
+    }
+    
+    .dark .task-item.completed {
+      background: #1b5e20;
+    }
+    
+    .task-reward {
+      background: #FFD700;
+      color: #333;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    
+    .share-btn {
+      background: #2e7d32;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.3s;
+    }
+    
+    .share-btn:hover:not(:disabled) {
+      background: #1b5e20;
+      transform: scale(1.05);
+    }
+    
+    .share-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .store-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .buy-btn {
+      background: #FF6B00;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-left: auto;
+      transition: all 0.3s;
+    }
+    
+    .buy-btn:hover:not(:disabled) {
+      background: #E55A00;
+      transform: scale(1.05);
+    }
+    
+    .buy-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    
+    .coins-tabs {
+      display: flex;
+      border-bottom: 2px solid #2e7d32;
+      margin-bottom: 15px;
+    }
+    
+    .coins-tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s;
+    }
+    
+    .coins-tab.active {
+      border-bottom-color: #2e7d32;
+      color: #2e7d32;
+    }
+
+    .coming-soon {
+      text-align: center;
+      padding: 40px 20px;
+      color: #666;
+    }
+    
+    .coming-soon-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+
+    .error-message {
+      background: #ffebee;
+      color: #c62828;
+      padding: 10px;
+      border-radius: 8px;
+      margin: 10px 0;
+      text-align: center;
+    }
+
+    .success-message {
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 10px;
+      border-radius: 8px;
+      margin: 10px 0;
+      text-align: center;
+    }
+
+    /* Offline Message Styles */
+    .offline-message {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #ff6b6b;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-weight: bold;
+      z-index: 1000;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    .online-message {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #4caf50;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-weight: bold;
+      z-index: 1000;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    .offline-content {
+      text-align: center;
+      padding: 40px 20px;
+      color: #666;
+    }
+
+    .offline-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+      color: #ff6b6b;
+    }
+    
+    /* Custom Message Styles */
+    .custom-message {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10000;
+      padding: 15px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-align: center;
+      max-width: 90%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      animation: slideDownMessage 0.3s ease-out;
+    }
+    
+    .custom-message.success-message {
+      background: #4caf50;
+      color: white;
+      border: 2px solid #45a049;
+    }
+    
+    .custom-message.error-message {
+      background: #f44336;
+      color: white;
+      border: 2px solid #d32f2f;
+    }
+    
+    @keyframes slideDownMessage {
+      from {
+        transform: translateX(-50%) translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideUpMessage {
+      from {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(-50%) translateY(-100%);
+        opacity: 0;
+      }
+    }
+
+    /* Social Media Sharing Styles */
+    .social-share-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+    
+    .social-share-content {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+    
+    .social-share-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #2e7d32;
+    }
+    
+    .referral-link-container {
+      display: flex;
+      gap: 10px;
+      margin: 15px 0;
+    }
+    
+    .referral-link {
+      flex: 1;
+      padding: 10px;
+      border: 2px dashed #2e7d32;
+      border-radius: 8px;
+      background: #f8f9fa;
+      font-size: 14px;
+      word-break: break-all;
+    }
+    
+    .copy-btn {
+      background: #2e7d32;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .social-icons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+    }
+    
+    .social-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .social-icon:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .social-icon.whatsapp { border-color: #25D366; }
+    .social-icon.facebook { border-color: #1877F2; }
+    .social-icon.telegram { border-color: #0088cc; }
+    .social-icon.instagram { border-color: #E4405F; }
+    .social-icon.twitter { border-color: #1DA1F2; }
+    .social-icon.messenger { border-color: #006AFF; }
+    
+    .social-icon img {
+      width: 30px;
+      height: 30px;
+      margin-bottom: 5px;
+    }
+    
+    .social-name {
+      font-size: 12px;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .close-modal {
+      background: #f44336;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    /* Referral Stats */
+    .referral-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 15px 0;
+    }
+    
+    .stat-item {
+      background: #e8f5e9;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 18px;
+      font-weight: bold;
+      color: #2e7d32;
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <!-- Offline/Online Message -->
+  <div id="connectionStatus"></div>
+
+  <!-- Social Share Modal -->
+  <div id="socialShareModal" class="social-share-modal" style="display: none;">
+    <div class="social-share-content">
+      <div class="social-share-title">Share Referral Link</div>
+      
+      <div class="referral-stats">
+        <div class="stat-item">
+          <div class="stat-value" id="totalReferrals">0</div>
+          <div class="stat-label">Total Referrals</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="pendingRewards">0</div>
+          <div class="stat-label">Pending Rewards</div>
+        </div>
+      </div>
+      
+      <div class="referral-link-container">
+        <input type="text" id="referralLinkInput" class="referral-link" readonly>
+        <button class="copy-btn" onclick="copyReferralLink()">Copy</button>
+      </div>
+      
+      <div class="social-icons">
+        <div class="social-icon whatsapp" onclick="shareOnWhatsApp()">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2325D366' d='M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893-.001-3.189-1.262-6.187-3.55-8.444'/%3E%3C/svg%3E" alt="WhatsApp">
+          <span class="social-name">WhatsApp</span>
+        </div>
+        
+        <div class="social-icon facebook" onclick="shareOnFacebook()">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231877F2' d='M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z'/%3E%3C/svg%3E" alt="Facebook">
+          <span class="social-name">Facebook</span>
+        </div>
+        
+        <div class="social-icon telegram" onclick="shareOnTelegram()">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%230088cc' d='M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.158c-.174-.761-1.003-1.221-1.765-.967l-10.4 4.02c-.656.253-.947.884-.758 1.557.106.373.394.694.794.848l2.543.975 1.516 4.876c.064.205.185.39.348.532.257.223.6.336.945.299.244-.026.477-.119.672-.271l1.811-1.43 3.22 2.405c.322.241.745.3 1.117.152.372-.149.645-.47.732-.857l2.96-12.012c.01-.045.015-.091.015-.137 0-.325-.192-.618-.487-.747zm-3.103 3.289l-5.64 4.359-.972-3.125 6.612-3.234z'/%3E%3C/svg%3E" alt="Telegram">
+          <span class="social-name">Telegram</span>
+        </div>
+        
+        <div class="social-icon instagram" onclick="shareOnInstagram()">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23E4405F' d='M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z'/%3E%3C/svg%3E" alt="Instagram">
+          <span class="social-name">Instagram</span>
+        </div>
+        
+        <div class="social-icon twitter" onclick="shareOnTwitter()">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231DA1F2' d='M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.213c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z'/%3E%3C/svg%3E" alt="Twitter">
+          <span class="social-name">Twitter</span>
+        </div>
+        
+        <div class="social-icon messenger" onclick="shareOnMessenger()">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23006AFF' d='M12 0C5.373 0 0 4.974 0 11.111c0 3.497 1.745 6.616 4.472 8.652V24l4.086-2.242c1.09.301 2.246.464 3.442.464 6.627 0 12-4.974 12-11.111S18.627 0 12 0zm1.193 14.963l-3.056-3.259-5.963 3.259 6.559-6.963 3.13 3.259 5.889-3.259-6.559 6.963z'/%3E%3C/svg%3E" alt="Messenger">
+          <span class="social-name">Messenger</span>
+        </div>
+      </div>
+      
+      <button class="close-modal" onclick="closeShareModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- Auth Section -->
+  <div id="authSection">
+    <header>EarnFlux</header>
+    <div class="container">
+      <div class="auth-container">
+        <div id="loginForm" class="card">
+          <h2 style="text-align: center;">Login to EarnFlux</h2>
+          <form class="auth-form" onsubmit="loginUser(event)">
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button type="submit">Login</button>
+          </form>
+          <div class="auth-switch">
+            <p>Don't have an account? <button type="button" onclick="showRegister()">Register</button></p>
+          </div>
+        </div>
+
+        <div id="registerForm" class="card" style="display: none;">
+          <h2 style="text-align: center;">Create Account</h2>
+          <form class="auth-form" onsubmit="registerUser(event)">
+            <input type="text" id="registerName" placeholder="Full Name" required>
+            <input type="email" id="registerEmail" placeholder="Email" required>
+            <input type="password" id="registerPassword" placeholder="Password" required>
+            <!-- Referral Code Input -->
+            <input type="text" id="referralCode" placeholder="Referral Code (Optional)" value="">
+            <button type="submit">Create Account</button>
+          </form>
+          <div class="auth-switch">
+            <p>Already have an account? <button type="button" onclick="showLogin()">Login</button></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App Section (Initially Hidden) -->
+  <div id="appSection" style="display: none;">
+    <header>EarnFlux</header>
+
+    <nav>
+      <button onclick="showTab('earn')" id="tab-earn" class="active">Daily Earn</button>
+      <button onclick="showTab('coins')" id="tab-coins">Coins</button>
+      <button onclick="showTab('deals')" id="tab-deals">Discounts</button>
+      <button onclick="showTab('festival')" id="tab-festival">फेस्टिवल ऑफर्स</button>
+      <button onclick="showTab('settings')" id="tab-settings">Settings</button>
+    </nav>
+
+    <div class="container">
+      <!-- User Info -->
+      <div id="userInfo" class="user-info card">
+        Welcome, <span id="userName">User</span>!
+        <span id="userPoints">Points: 0</span>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+
+      <!-- Offline Content -->
+      <div id="offlineContent" style="display: none;">
+        <div class="card">
+          <div class="offline-content">
+            <div class="offline-icon">📶</div>
+            <h3>You are Offline</h3>
+            <p>Some features may not work without internet connection.</p>
+            <p>Your coins and data are saved locally and will sync when you're back online.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Online Content -->
+      <div id="onlineContent">
+        <div id="earn" class="tab">
+          <h2>Daily Earn Apps</h2>
+          <div id="earnContent" class="card">
+            <div style="text-align: center; padding: 20px;">
+              <div class="loading" style="border-top-color: #2e7d32; margin: 0 auto;"></div>
+              <p>Loading earn apps...</p>
+            </div>
+          </div>
+          <div class="card">
+            <p id="countdown" style="text-align:center; font-weight:bold;"></p>
+          </div>
+        </div>
+
+        <div id="coins" class="tab" style="display:none;">
+          <div class="coins-section">
+            <div class="coins-display">
+              <span class="coins-icon">🪙</span>
+              <span id="coins-balance">0 Coins</span>
+            </div>
+            <div id="daily-spin-status"></div>
+          </div>
+          
+          <div class="coins-tabs">
+            <button class="coins-tab active" onclick="showCoinsTab('earnCoins')">Earn Coins</button>
+            <button class="coins-tab" onclick="showCoinsTab('store')">Store</button>
+            <button class="coins-tab" onclick="showCoinsTab('referrals')">My Referrals</button>
+          </div>
+          
+          <div id="earnCoins" class="coins-tab-content">
+            <div class="card">
+              <h3>Daily Spin</h3>
+              <div class="spin-wheel-container">
+                <div class="wheel" id="wheel">
+                  <div class="wheel-pointer"></div>
+                </div>
+                <button class="spin-btn" id="spin-btn" onclick="spinWheel()">SPIN WHEEL</button>
+                <p id="spin-result" style="margin-top: 10px; font-weight: bold;"></p>
+              </div>
+            </div>
+            
+            <div class="card">
+              <h3>Referral Tasks</h3>
+              <div id="referral-tasks">
+                <!-- Tasks will be loaded here -->
+              </div>
+            </div>
+          </div>
+          
+          <div id="store" class="coins-tab-content" style="display:none;">
+            <div class="card">
+              <h3>Redeem Your Coins</h3>
+              <div class="coming-soon">
+                <div class="coming-soon-icon">🛍️</div>
+                <h3>Store Coming Soon!</h3>
+                <p>We're working on exciting rewards for you.</p>
+                <p>Start earning coins now to redeem them later!</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="referrals" class="coins-tab-content" style="display:none;">
+            <div class="card">
+              <h3>My Referral Stats</h3>
+              <div class="referral-stats">
+                <div class="stat-item">
+                  <div class="stat-value" id="totalReferralsCount">0</div>
+                  <div class="stat-label">Total Referrals</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" id="earnedCoinsCount">0</div>
+                  <div class="stat-label">Earned Coins</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" id="pendingReferralsCount">0</div>
+                  <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" id="referralCodeDisplay">-</div>
+                  <div class="stat-label">Your Code</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card">
+              <h3>Referral History</h3>
+              <div id="referral-history">
+                <!-- Referral history will be loaded here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Other tabs remain the same -->
+        <div id="deals" class="tab" style="display:none;">
+          <h2>Hot Discounts</h2>
+          
+          <h3 class="category-title">इलेक्ट्रॉनिक्स (Electronics)</h3>
+          <div class="card">
+            <div class="deal-item">
+                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80" alt="Mobile">
+                <div class="earn-item-content">
+                    <h4>Flipkart Big Billion Days</h4>
+                    <p>Mobiles पर 40% तक की छूट।</p>
+                </div>
+                <a href="https://www.flipkart.com/offers" target="_blank" class="deal-link">Check Now</a>
+            </div>
+            <div class="deal-item">
+                <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80" alt="Laptop">
+                <div class="earn-item-content">
+                    <h4>Amazon Great Indian Festival</h4>
+                    <p>Laptops पर शानदार ऑफर्स।</p>
+                </div>
+                <a href="https://www.amazon.in/deals" target="_blank" class="deal-link">Check Now</a>
+            </div>
+          </div>
+
+          <h3 class="category-title">फर्नीचर (Furniture)</h3>
+          <div class="card">
+            <div class="deal-item">
+                <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80" alt="Sofa">
+                <div class="earn-item-content">
+                    <h4>Pepperfry Grand Deals</h4>
+                    <p>सोफा और लिविंग रूम फर्नीचर पर 50% तक की छूट।</p>
+                </div>
+                <a href="#" target="_blank" class="deal-link">View Deal</a>
+            </div>
+          </div>
+        </div>
+
+        <div id="festival" class="tab" style="display:none;">
+          <!-- Festival content will be loaded dynamically -->
+          <div style="text-align: center; padding: 20px;">
+            <div class="loading" style="border-top-color: #2e7d32; margin: 0 auto;"></div>
+            <p>Loading festival offers...</p>
+          </div>
+        </div>
+
+        <div id="settings" class="tab" style="display:none;">
+          <h2>App Settings</h2>
+          <div class="card">
+            <label for="themeSelect">Theme:</label><br>
+            <select id="themeSelect" onchange="changeTheme(this.value)">
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </div>
+          <div class="card">
+            <h3>About EarnFlux</h3>
+            <p>EarnFlux helps you discover the best earning opportunities and discounts across various platforms.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>© 2025 | Powered by EarnFlux. | All rights reserved.</footer>
+
+  <script>
+    // Custom Authentication System with Real Referral Tracking
+    let currentUser = null;
+    let isOnline = navigator.onLine;
+    let currentReferralTaskId = null;
+
+    // Initialize users and referral system
+    function initializeUsers() {
+      if (!localStorage.getItem('earnflux_users')) {
+        localStorage.setItem('earnflux_users', JSON.stringify([]));
+      }
+      if (!localStorage.getItem('earnflux_referrals')) {
+        localStorage.setItem('earnflux_referrals', JSON.stringify([]));
+      }
+      if (!localStorage.getItem('earnflux_pending_referrals')) {
+        localStorage.setItem('earnflux_pending_referrals', JSON.stringify([]));
+      }
+    }
+
+    // Check URL for referral code
+    function checkReferralCode() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const refCode = urlParams.get('ref');
+      if (refCode) {
+        document.getElementById('referralCode').value = refCode;
+      }
+    }
+
+    // Online/Offline Detection
+    function updateConnectionStatus() {
+      const statusElement = document.getElementById('connectionStatus');
+      const offlineContent = document.getElementById('offlineContent');
+      const onlineContent = document.getElementById('onlineContent');
+      
+      if (isOnline) {
+        statusElement.innerHTML = '<div class="online-message">✅ You are back online</div>';
+        offlineContent.style.display = 'none';
+        onlineContent.style.display = 'block';
+        
+        setTimeout(() => {
+          statusElement.innerHTML = '';
+        }, 3000);
+      } else {
+        statusElement.innerHTML = '<div class="offline-message">📶 You are offline - Some features may not work</div>';
+        offlineContent.style.display = 'block';
+        onlineContent.style.display = 'none';
+      }
+    }
+
+    // Event listeners for online/offline status
+    window.addEventListener('online', () => {
+      isOnline = true;
+      updateConnectionStatus();
+    });
+
+    window.addEventListener('offline', () => {
+      isOnline = false;
+      updateConnectionStatus();
+    });
+
+    // Auth Functions
+    function showLogin() {
+      document.getElementById('loginForm').style.display = 'block';
+      document.getElementById('registerForm').style.display = 'none';
+      clearMessages();
+    }
+
+    function showRegister() {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('registerForm').style.display = 'block';
+      clearMessages();
+      checkReferralCode();
+    }
+
+    function showAuth() {
+      document.getElementById('authSection').style.display = 'block';
+      document.getElementById('appSection').style.display = 'none';
+      currentUser = null;
+    }
+
+    function showApp(user) {
+      document.getElementById('authSection').style.display = 'none';
+      document.getElementById('appSection').style.display = 'block';
+      document.getElementById('userName').textContent = user.name;
+      updateConnectionStatus();
+      loadUserData();
+      updateReferralStats();
+    }
+
+    function registerUser(event) {
+      event.preventDefault();
+      const name = document.getElementById('registerName').value;
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+      const referralCode = document.getElementById('referralCode').value;
+
+      // Basic validation
+      if (password.length < 6) {
+        showMessage('Password must be at least 6 characters long', 'error');
+        return;
+      }
+
+      initializeUsers();
+      const users = JSON.parse(localStorage.getItem('earnflux_users'));
+
+      // Check if user already exists
+      if (users.find(user => user.email === email)) {
+        showMessage('User with this email already exists', 'error');
+        return;
+      }
+
+      // Generate unique user ID and referral code
+      const userId = Date.now().toString();
+      const userReferralCode = generateReferralCode();
+
+      // Create new user
+      const newUser = {
+        id: userId,
+        name: name,
+        email: email,
+        password: password,
+        referralCode: userReferralCode,
+        coins: 0,
+        joinedDate: new Date().toISOString(),
+        referredBy: referralCode || null
+      };
+
+      users.push(newUser);
+      localStorage.setItem('earnflux_users', JSON.stringify(users));
+      localStorage.setItem('earnflux_currentUser', JSON.stringify(newUser));
+
+      // Process referral if applicable
+      if (referralCode) {
+        processReferral(referralCode, userId, email);
+      }
+
+      showMessage('Account created successfully!', 'success');
+      setTimeout(() => {
+        showApp(newUser);
+      }, 1000);
+    }
+
+    function processReferral(referralCode, newUserId, newUserEmail) {
+      const users = JSON.parse(localStorage.getItem('earnflux_users'));
+      const referrer = users.find(user => user.referralCode === referralCode);
+      
+      if (referrer) {
+        const referrals = JSON.parse(localStorage.getItem('earnflux_referrals')) || [];
+        const pendingReferrals = JSON.parse(localStorage.getItem('earnflux_pending_referrals')) || [];
+        
+        // Add to pending referrals (will be confirmed when user completes tasks)
+        const pendingReferral = {
+          id: Date.now().toString(),
+          referrerId: referrer.id,
+          referredUserId: newUserId,
+          referredUserEmail: newUserEmail,
+          status: 'pending',
+          date: new Date().toISOString(),
+          coins: 50 // Base referral coins
+        };
+        
+        pendingReferrals.push(pendingReferral);
+        localStorage.setItem('earnflux_pending_referrals', JSON.stringify(pendingReferrals));
+        
+        // Update referrer's stats
+        updateReferrerStats(referrer.id);
+      }
+    }
+
+    function updateReferrerStats(referrerId) {
+      const pendingReferrals = JSON.parse(localStorage.getItem('earnflux_pending_referrals')) || [];
+      const userReferrals = pendingReferrals.filter(ref => ref.referrerId === referrerId);
+      
+      // Update user's referral count
+      const users = JSON.parse(localStorage.getItem('earnflux_users'));
+      const userIndex = users.findIndex(user => user.id === referrerId);
+      
+      if (userIndex !== -1) {
+        users[userIndex].pendingReferrals = userReferrals.length;
+        localStorage.setItem('earnflux_users', JSON.stringify(users));
+        
+        // If current user is the referrer, update UI
+        if (currentUser && currentUser.id === referrerId) {
+          updateReferralStats();
+        }
+      }
+    }
+
+    function generateReferralCode() {
+      return Math.random().toString(36).substring(2, 8).toUpperCase();
+    }
+
+    function loginUser(event) {
+      event.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+
+      initializeUsers();
+      const users = JSON.parse(localStorage.getItem('earnflux_users'));
+      const user = users.find(user => user.email === email && user.password === password);
+
+      if (user) {
+        localStorage.setItem('earnflux_currentUser', JSON.stringify(user));
+        showMessage('Login successful!', 'success');
+        setTimeout(() => {
+          showApp(user);
+        }, 1000);
+      } else {
+        showMessage('Invalid email or password', 'error');
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('earnflux_currentUser');
+      currentUser = null;
+      showAuth();
+      showMessage('Logged out successfully', 'success');
+    }
+
+    function loadUserData() {
+      const userData = localStorage.getItem('earnflux_currentUser');
+      if (userData) {
+        currentUser = JSON.parse(userData);
+        document.getElementById('userName').textContent = currentUser.name;
+        
+        // Load user-specific coins
+        const userCoins = currentUser.coins || 0;
+        document.getElementById('coins-balance').textContent = `${userCoins} Coins`;
+        document.getElementById('userPoints').textContent = `Points: ${userCoins}`;
+      }
+    }
+
+    // Real Referral System
+    function openShareModal(taskId) {
+      if (!currentUser) {
+        showMessage('Please login to share referral', 'error');
+        return;
+      }
+
+      currentReferralTaskId = taskId;
+      const referralLink = `${window.location.origin}${window.location.pathname}?ref=${currentUser.referralCode}`;
+      
+      document.getElementById('referralLinkInput').value = referralLink;
+      updateShareModalStats();
+      document.getElementById('socialShareModal').style.display = 'flex';
+    }
+
+    function updateShareModalStats() {
+      const pendingReferrals = JSON.parse(localStorage.getItem('earnflux_pending_referrals')) || [];
+      const userReferrals = pendingReferrals.filter(ref => ref.referrerId === currentUser.id);
+      
+      document.getElementById('totalReferrals').textContent = userReferrals.length;
+      document.getElementById('pendingRewards').textContent = userReferrals.length * 50;
+    }
+
+    function closeShareModal() {
+      document.getElementById('socialShareModal').style.display = 'none';
+      currentReferralTaskId = null;
+    }
+
+    function copyReferralLink() {
+      const referralLink = document.getElementById('referralLinkInput');
+      referralLink.select();
+      document.execCommand('copy');
+      showMessage('Referral link copied to clipboard!', 'success');
+    }
+
+    // Social Media Sharing Functions
+    function shareOnWhatsApp() {
+      const referralLink = document.getElementById('referralLinkInput').value;
+      const message = `Join me on EarnFlux and earn amazing rewards! Use my referral link: ${referralLink}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function shareOnFacebook() {
+      const referralLink = document.getElementById('referralLinkInput').value;
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}`, '_blank');
+    }
+
+    function shareOnTelegram() {
+      const referralLink = document.getElementById('referralLinkInput').value;
+      const message = `Join me on EarnFlux and earn amazing rewards! Use my referral link: ${referralLink}`;
+      window.open(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function shareOnInstagram() {
+      showMessage('Copy the link and share it on Instagram stories or posts', 'success');
+      copyReferralLink();
+    }
+
+    function shareOnTwitter() {
+      const referralLink = document.getElementById('referralLinkInput').value;
+      const message = `Join me on EarnFlux and earn amazing rewards! ${referralLink}`;
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function shareOnMessenger() {
+      const referralLink = document.getElementById('referralLinkInput').value;
+      window.open(`https://www.facebook.com/dialog/send?link=${encodeURIComponent(referralLink)}&app_id=YOUR_APP_ID&redirect_uri=${encodeURIComponent(window.location.href)}`, '_blank');
+    }
+
+    // Update referral tasks to use real system
+    function loadReferralTasks() {
+      const tasksContainer = document.getElementById('referral-tasks');
+      const referralTasks = [
+        { id: 1, name: "Refer 1 Friend", coins: 50, required: 1 },
+        { id: 2, name: "Refer 2 Friends", coins: 120, required: 2 },
+        { id: 3, name: "Refer 5 Friends", coins: 300, required: 5 },
+        { id: 4, name: "Refer 10 Friends", coins: 700, required: 10 },
+        { id: 5, name: "Refer 20 Friends", coins: 1500, required: 20 }
+      ];
+
+      const pendingReferrals = JSON.parse(localStorage.getItem('earnflux_pending_referrals')) || [];
+      const userReferrals = pendingReferrals.filter(ref => ref.referrerId === currentUser.id);
+      const totalReferrals = userReferrals.length;
+
+      let tasksHTML = '';
+      
+      referralTasks.forEach(task => {
+        const progress = Math.min(totalReferrals, task.required);
+        const percentage = (progress / task.required) * 100;
+        const isCompleted = totalReferrals >= task.required;
+        
+        tasksHTML += `
+          <div class="task-item ${isCompleted ? 'completed' : ''}">
+            <div style="flex: 1;">
+              <strong>${task.name}</strong>
+              <p style="margin: 5px 0; font-size: 14px; color: #666;">
+                Refer ${task.required} friends and earn ${task.coins} coins
+              </p>
+              <div style="background: #e0e0e0; border-radius: 10px; height: 8px; margin: 5px 0;">
+                <div style="background: #4caf50; height: 100%; border-radius: 10px; width: ${percentage}%; transition: width 0.3s;"></div>
+              </div>
+              <div style="font-size: 12px; color: #666;">
+                ${progress}/${task.required} completed
+              </div>
+              ${isCompleted ? '<span style="color: #4caf50; font-size: 12px;">✅ Task Completed - Coins Added!</span>' : ''}
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span class="task-reward">${task.coins} Coins</span>
+              <button class="share-btn" onclick="openShareModal(${task.id})">
+                📤 Share
+              </button>
+            </div>
+          </div>
+        `;
+      });
+      
+      tasksContainer.innerHTML = tasksHTML;
+    }
+
+    function updateReferralStats() {
+      if (!currentUser) return;
+
+      const pendingReferrals = JSON.parse(localStorage.getItem('earnflux_pending_referrals')) || [];
+      const userReferrals = pendingReferrals.filter(ref => ref.referrerId === currentUser.id);
+      const totalReferrals = userReferrals.length;
+      
+      // Calculate earned coins from completed referrals
+      const completedReferrals = userReferrals.filter(ref => ref.status === 'completed');
+      const earnedCoins = completedReferrals.reduce((total, ref) => total + (ref.coins || 50), 0);
+
+      document.getElementById('totalReferralsCount').textContent = totalReferrals;
+      document.getElementById('earnedCoinsCount').textContent = earnedCoins;
+      document.getElementById('pendingReferralsCount').textContent = userReferrals.filter(ref => ref.status === 'pending').length;
+      document.getElementById('referralCodeDisplay').textContent = currentUser.referralCode;
+
+      // Update referral history
+      const historyContainer = document.getElementById('referral-history');
+      if (userReferrals.length === 0) {
+        historyContainer.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">No referrals yet. Share your link to start earning!</p>';
+      } else {
+        let historyHTML = '';
+        userReferrals.forEach(ref => {
+          historyHTML += `
+            <div class="task-item">
+              <div>
+                <strong>${ref.referredUserEmail}</strong>
+                <p style="margin: 5px 0; font-size: 14px; color: #666;">
+                  Joined: ${new Date(ref.date).toLocaleDateString()}
+                </p>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span class="task-reward" style="background: ${ref.status === 'completed' ? '#4caf50' : '#ff9800'}">
+                  ${ref.status === 'completed' ? '✅ Completed' : '⏳ Pending'}
+                </span>
+                <span style="font-weight: bold; color: #2e7d32;">+${ref.coins || 50}</span>
+              </div>
+            </div>
+          `;
+        });
+        historyContainer.innerHTML = historyHTML;
+      }
+    }
+
+    // Check if user is already logged in on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      initializeUsers();
+      checkReferralCode();
+      
+      const userData = localStorage.getItem('earnflux_currentUser');
+      if (userData) {
+        const user = JSON.parse(userData);
+        showApp(user);
+      } else {
+        showAuth();
+      }
+      
+      updateConnectionStatus();
+      updateEarnContent();
+    });
+
+    // Coins System - User Specific
+    function getUserCoins() {
+      if (!currentUser) return 0;
+      return currentUser.coins || 0;
+    }
+
+    function setUserCoins(coins) {
+      if (!currentUser) return;
+      
+      const users = JSON.parse(localStorage.getItem('earnflux_users'));
+      const userIndex = users.findIndex(user => user.id === currentUser.id);
+      
+      if (userIndex !== -1) {
+        users[userIndex].coins = coins;
+        localStorage.setItem('earnflux_users', JSON.stringify(users));
+        
+        // Update current user
+        currentUser.coins = coins;
+        localStorage.setItem('earnflux_currentUser', JSON.stringify(currentUser));
+        
+        document.getElementById('coins-balance').textContent = `${coins} Coins`;
+        document.getElementById('userPoints').textContent = `Points: ${coins}`;
+      }
+    }
+
+    let lastSpinTime = localStorage.getItem('earnflux_lastSpinTime');
+
+    // Initialize Coins System
+    function initCoinsSystem() {
+      updateCoinsDisplay();
+      loadReferralTasks();
+      updateSpinStatus();
+      updateReferralStats();
+    }
+
+    function updateCoinsDisplay() {
+      const coins = getUserCoins();
+      document.getElementById('coins-balance').textContent = `${coins} Coins`;
+      document.getElementById('userPoints').textContent = `Points: ${coins}`;
+    }
+
+    function updateSpinStatus() {
+      const spinStatus = document.getElementById('daily-spin-status');
+      const spinBtn = document.getElementById('spin-btn');
+      
+      if (canSpinToday()) {
+        spinStatus.innerHTML = '<span style="color: #2e7d32;">✅ Spin Available</span>';
+        spinBtn.disabled = false;
+      } else {
+        spinStatus.innerHTML = '<span style="color: #f44336;">⏳ Spin Tomorrow</span>';
+        spinBtn.disabled = true;
+      }
+    }
+
+    function canSpinToday() {
+      if (!lastSpinTime) return true;
+      const lastSpin = new Date(parseInt(lastSpinTime));
+      const today = new Date();
+      return lastSpin.toDateString() !== today.toDateString();
+    }
+
+    function spinWheel() {
+      if (!currentUser) {
+        showMessage('Please login to spin the wheel', 'error');
+        return;
+      }
+
+      if (!canSpinToday()) {
+        showMessage("You can only spin once per day! Come back tomorrow.", 'error');
+        return;
+      }
+
+      const wheel = document.getElementById('wheel');
+      const spinBtn = document.getElementById('spin-btn');
+      const resultText = document.getElementById('spin-result');
+      
+      spinBtn.disabled = true;
+      resultText.textContent = 'Spinning...';
+      resultText.style.color = '#FF6B00';
+      
+      const coinsWon = Math.floor(Math.random() * 91) + 10;
+      const spinDegrees = 1800 + Math.floor(Math.random() * 360);
+      
+      wheel.style.transform = `rotate(${spinDegrees}deg)`;
+      
+      setTimeout(() => {
+        const currentCoins = getUserCoins();
+        setUserCoins(currentCoins + coinsWon);
+        
+        lastSpinTime = Date.now().toString();
+        localStorage.setItem('earnflux_lastSpinTime', lastSpinTime);
+        
+        resultText.textContent = `🎉 Congratulations! You won ${coinsWon} coins!`;
+        resultText.style.color = '#2e7d32';
+        
+        updateSpinStatus();
+        showMessage(`🎊 You won ${coinsWon} coins from daily spin!`, 'success');
+      }, 3000);
+    }
+
+    function showCoinsTab(tabName) {
+      document.querySelectorAll('.coins-tab-content').forEach(tab => {
+        tab.style.display = 'none';
+      });
+      
+      document.querySelectorAll('.coins-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      document.getElementById(tabName).style.display = 'block';
+      event.target.classList.add('active');
+
+      if (tabName === 'referrals') {
+        updateReferralStats();
+      }
+    }
+
+    function showMessage(message, type) {
+      clearMessages();
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `custom-message ${type === 'error' ? 'error-message' : 'success-message'}`;
+      messageDiv.textContent = message;
+      
+      document.body.appendChild(messageDiv);
+      
+      setTimeout(() => {
+        if (messageDiv.parentNode) {
+          messageDiv.style.animation = 'slideUpMessage 0.3s ease-out';
+          setTimeout(() => {
+            if (messageDiv.parentNode) {
+              messageDiv.remove();
+            }
+          }, 300);
+        }
+      }, 5000);
+    }
+
+    function clearMessages() {
+      const messages = document.querySelectorAll('.custom-message');
+      messages.forEach(msg => {
+        msg.style.animation = 'slideUpMessage 0.3s ease-out';
+        setTimeout(() => {
+          if (msg.parentNode) {
+            msg.remove();
+          }
+        }, 300);
+      });
+    }
+
+    // All other functions (festival, tabs, earn apps, etc.) remain the same
+    // Festival Detection
+    function getCurrentFestival() {
+      const now = new Date();
+      const month = now.getMonth() + 1;
+      const date = now.getDate();
+      
+      if ((month === 9 && date >= 21) || (month === 10 && date <= 5)) {
+        return {
+          name: "नवरात्रि उत्सव",
+          themeColor: "#9c27b0",
+          tabName: "navratri",
+          themeClass: "navratri-theme",
+          headerClass: "navratri-header"
+        };
+      }
+      
+      if ((month === 10 && date >= 5) || (month === 11 && date <= 15)) {
+        return {
+          name: "दिवाली महोत्सव",
+          themeColor: "#ff5722",
+          tabName: "diwali",
+          themeClass: "diwali-theme",
+          headerClass: "diwali-header"
+        };
+      }
+      
+      if (month === 12 && date >= 20 && date <= 31) {
+        return {
+          name: "क्रिसमस सेल",
+          themeColor: "#e91e63", 
+          tabName: "christmas",
+          themeClass: "christmas-theme",
+          headerClass: "christmas-header"
+        };
+      }
+      
+      return {
+        name: "फेस्टिवल ऑफर्स",
+        themeColor: "#388e3c",
+        tabName: "festival",
+        themeClass: "default-festival",
+        headerClass: ""
+      };
+    }
+
+    // Festival Content
+    function getFestivalContent(festival) {
+      if (festival.tabName === "diwali") {
+        return `
+          <div class="festival-header ${festival.headerClass}">✨ ${festival.name} ✨</div>
+          <div class="card">
+            <h4>दिवाली गिफ्ट हॅम्पर्स!</h4>
+            <div class="deal-item">
+                <img src="https://images.unsplash.com/photo-1604594849809-dfedbc827105?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80" alt="Diwali Hampers">
+                <div class="earn-item-content">
+                    <p>Amazon & Flipkart पर दिवाली गिफ्ट हॅम्पर्स पर <strong>60% तक की छूट</strong>।</p>
+                </div>
+                <a href="#" target="_blank" class="deal-link">Shop Now</a>
+            </div>
+          </div>
+          <div class="card">
+            <h4>पटाखे और डेकोरेशन</h4>
+            <div class="deal-item">
+                <img src="https://images.unsplash.com/photo-1478700485868-972b69dc3fc4?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80" alt="Fireworks">
+                <div class="earn-item-content">
+                    <p>Myntra और HomeCentre पर पटाखे और घर सजाने के सामान पर भारी छूट।</p>
+                </div>
+                <a href="#" target="_blank" class="deal-link">Order Now</a>
+            </div>
+          </div>
+          <div class="card">
+            <h4>स्वीट्स और ड्राई फ्रूट्स</h4>
+            <div class="deal-item">
+                <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80" alt="Sweets">
+                <div class="earn-item-content">
+                    <p>Haldiram's और Local Sweet Shops पर मिठाइयों और ड्राई फ्रूट्स पर कॉम्बो ऑफर्स।</p>
+                </div>
+                <a href="#" target="_blank" class="deal-link">Buy Now</a>
+            </div>
+          </div>
+          <div class="card">
+            <h4>गोल्ड ज्वेलरी ऑफर्स</h4>
+            <div class="deal-item">
+                <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80" alt="Jewelry">
+                <div class="earn-item-content">
+                    <p>Tanishq और Kalyan Jewellers पर गोल्ड ज्वेलरी पर मेकिंग चार्ज फ्री।</p>
+                </div>
+                <a href="#" target="_blank" class="deal-link">Explore</a>
+            </div>
+          </div>
+        `;
+      } else if (festival.tabName === "navratri") {
+        return `
+          <div class="festival-header ${festival.headerClass}">✨ ${festival.name} ✨</div>
+          <div class="card">
+            <h4>एथनिक वियर पर धूम!</h4>
+            <div class="deal-item">
+                <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80" alt="Ethnic Wear">
+                <div class="earn-item-content">
+                    <p>Myntra & Ajio पर गरबा ड्रेसेस और एथनिक वियर पर <strong>50-70%</strong> की छूट।</p>
+                </div>
+                <a href="#" target="_blank" class="deal-link">Shop Now</a>
+            </div>
+          </div>
+          <div class="card">
+            <h4>व्रत का सामान</h4>
+            <div class="deal-item">
+                <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80" alt="Fasting Food">
+                <div class="earn-item-content">
+                    <p>BigBasket पर व्रत के सामान (कुट्टू, सिंघाड़ा) पर स्पेशल कॉम्बो ऑफर्स।</p>
+                </div>
+                <a href="#" target="_blank" class="deal-link">Order Now</a>
+            </div>
+          </div>
+          <div class="card">
+            <h4>डांडिया नाइट्स</h4>
+            <div class="deal-item">
+                <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80" alt="Dandiya Events">
+                <div class="earn-item-content">
+                    <p>Paytm Insider से अपने शहर के बेस्ट डांडिया इवेंट्स के टिकट बुक करें।</p>
+                </div>
+                <a href="#" target="_blank" class="deal-link">Book Now</a>
+            </div>
+          </div>
+        `;
+      } else if (festival.tabName === "christmas") {
+        return `
+          <div class="festival-header ${festival.headerClass}">🎄 ${festival.name} 🎄</div>
+          <div class="card">
+            <h4>क्रिसमस गिफ्ट्स!</h4>
+            <div class="deal-item">
+                <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80" alt="Christmas Gifts">
+                <div class="earn-item-content">
+                    <p>Amazon और Flipkart पर क्रिसमस गिफ्ट्स और डेकोरेशन आइटम्स पर <strong>70% तक की छूट</strong>।</p>
+                </div>
+                <a href="#" target="_blank" class="deal-link">Shop Now</a>
+            </div>
+          </div>
+          <div class="card">
+            <h4>विंटर फैशन</h4>
+            <div class="deal-item">
+                <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80" alt="Winter Fashion">
+                <div class="earn-item-content">
+                    <p>Myntra और H&M पर विंटर कपड़े और एक्सेसरीज पर बड़ी छूट।</p>
+                </div>
+                <a href="#" target="_blank" class="deal-link">Buy Now</a>
+            </div>
+          </div>
+          <div class="card">
+            <h4>न्यू ईयर पार्टी</h4>
+            <div class="deal-item">
+                <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80" alt="New Year Party">
+                <div class="earn-item-content">
+                    <p>BookMyShow और Paytm Insider पर क्रिसमस और न्यू ईयर पार्टी के टिकट्स बुक करें।</p>
+                </div>
+                <a href="#" target="_blank" class="deal-link">Book Now</a>
+            </div>
+          </div>
+        `;
+      } else {
+        return `
+          <div class="festival-header">🎉 ${festival.name} 🎉</div>
+          <div class="card">
+            <h4>सीजनल सेल</h4>
+            <div class="deal-item">
+                <img src="https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80" alt="Seasonal Sale">
+                <div class="earn-item-content">
+                    <p>All major platforms पर current season के हिसाब से बेस्ट डिस्काउंट्स।</p>
+                </div>
+                <a href="#" target="_blank" class="deal-link">Explore</a>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // Tabs
+    function showTab(tabId) {
+      document.querySelectorAll('.tab').forEach(t => t.style.display = "none");
+      document.getElementById(tabId).style.display = "block";
+      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+      document.getElementById("tab-"+tabId).classList.add("active");
+      
+      if (tabId === 'coins') {
+        initCoinsSystem();
+      }
+      
+      if (tabId === 'festival') {
+        const festival = getCurrentFestival();
+        document.getElementById("festival").innerHTML = getFestivalContent(festival);
+        
+        document.body.classList.remove('diwali-theme', 'navratri-theme', 'christmas-theme');
+        if (festival.themeClass) {
+          document.body.classList.add(festival.themeClass);
+        }
+      }
+      
+      const tabNames = {
+        'earn': 'Daily Earn',
+        'coins': 'Coins',
+        'deals': 'Discounts',
+        'festival': 'Festival Offers',
+        'settings': 'Settings'
+      };
+      document.title = `EarnFlux - ${tabNames[tabId]}`;
+    }
+
+    // Daily Earn Logic
+    const earnApps = [
+      {
+        logo: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' width='48px' height='48px'%3E%3Cpath fill='%234285F4' d='M24 9.8C20.2 9.8 17.1 11.6 15 14.3l5.3 5.3c.8-1.4 2.3-2.4 4-2.4 2.6 0 4.7 2.1 4.7 4.7s-2.1 4.7-4.7 4.7c-1.7 0-3.2-1-4-2.4l-5.3 5.3c2.1 2.8 5.2 4.5 8.9 4.5 6.2 0 11.2-5 11.2-11.2S30.2 9.8 24 9.8z'/%3E%3Cpath fill='%2334A853' d='M9.8 24c0-3.8 1.7-7 4.5-9.2L9 9.5C5.1 13.1 2.8 18.3 2.8 24s2.3 10.9 6.2 14.5l5.3-5.3C11.6 31 9.8 27.8 9.8 24z'/%3E%3Cpath fill='%23FBBC05' d='M15 33.7l-5.3 5.3C5.1 34.9 2.8 29.7 2.8 24s2.3-10.9 6.2-14.5l5.3 5.3c-2.8 2.1-4.5 5.2-4.5 8.9z'/%3E%3Cpath fill='%23EA4335' d='M33.7 15l5.3-5.3C34.9 5.1 29.7 2.8 24 2.8S13.1 5.1 9 9.5l5.3 5.3c2.1-2.8 5.2-4.5 8.9-4.5 3.8 0 7 1.7 9.2 4.5z'/%3E%3C/svg%3E",
+        name: "Google Opinion Rewards",
+        desc: "छोटे सर्वे पूरे करके Google Play क्रेडिट कमाएं।"
+      },
+      {
+        logo: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234688F1' d='M12 2A10 10 0 1 0 12 22A10 10 0 1 0 12 2z'/%3E%3Cpath fill='white' d='M12 6.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-1.5 2a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm1.5 2a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-1.5 2a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm1.5 2a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-1.5 2a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm1.5 2a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z'/%3E%3C/svg%3E",
+        name: "Swagbucks",
+        desc: "सर्वे, वीडियो देखने और शॉपिंग पर पॉइंट्स कमाएं।"
+      },
+      {
+        logo: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F44336' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H8v-2h3V7h2v4h3v2h-3v4h-2z'/%3E%3C/svg%3E",
+        name: "Roz Dhan",
+        desc: "न्यूज़ पढ़ने, गेम खेलने और टास्क पूरे करके पैसे कमाएँ।"
+      }
+    ];
+    
+    let lastTime = localStorage.getItem("earnflux_lastTime");
+    
+    function updateEarnContent() {
+      const now = Date.now();
+      if (!lastTime || now - lastTime >= 24*60*60*1000) {
+        localStorage.setItem("earnflux_lastTime", now);
+        lastTime = now;
+      }
+      
+      let contentHTML = '';
+      earnApps.forEach(app => {
+          contentHTML += `
+            <div class="earn-item">
+                <img src="${app.logo}" alt="${app.name} logo">
+                <div class="earn-item-content">
+                    <h4>${app.name}</h4>
+                    <p>${app.desc}</p>
+                </div>
+            </div>
+          `;
+      });
+      document.getElementById("earnContent").innerHTML = contentHTML;
+      updateCountdown();
+    }
+
+    function updateCountdown() {
+      let nextTime = parseInt(lastTime) + 24*60*60*1000;
+      let interval = setInterval(() => {
+        let diff = nextTime - Date.now();
+        if (diff <= 0) {
+          clearInterval(interval);
+          document.getElementById("countdown").innerText = "New tips are ready!";
+          return;
+        }
+        let hrs = Math.floor(diff/(1000*60*60));
+        let mins = Math.floor((diff%(1000*60*60))/(1000*60));
+        let secs = Math.floor((diff%(1000*60))/1000);
+        document.getElementById("countdown").innerText =
+          `Next Refresh in: ${hrs}h ${mins}m ${secs}s`;
+      },1000);
+    }
+
+    // Load saved theme on startup
+    window.onload = () => {
+      const savedTheme = localStorage.getItem("earnflux_theme") || "light";
+      document.getElementById("themeSelect").value = savedTheme;
+      if(savedTheme === "dark") document.body.classList.add("dark");
+      
+      const festival = getCurrentFestival();
+      document.body.classList.add(festival.themeClass);
+      
+      document.getElementById("tab-festival").textContent = festival.name;
+      
+      updateConnectionStatus();
+      
+      setTimeout(() => {
+        updateEarnContent();
+      }, 500);
+    };
+
+    // Theme Change
+    function changeTheme(theme) {
+      if(theme==="dark") {
+        document.body.classList.add("dark");
+      } else {
+        document.body.classList.remove("dark");
+      }
+      localStorage.setItem("earnflux_theme", theme);
+    }
+  </script>
+</body>
+</html>
